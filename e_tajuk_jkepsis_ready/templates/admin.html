@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin - e-Tajuk@JKEPSIS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="admin-panel">
+    <h2>Admin Panel - Upload CSV</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="flash {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".csv" required>
+      <button class="btn primary" type="submit">Upload CSV</button>
+    </form>
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+  </div>
+</body>
+</html>

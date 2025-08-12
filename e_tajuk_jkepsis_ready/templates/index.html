@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>e-Tajuk@JKEPSIS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" class="logo">
+      <div class="title">e-Tajuk@JKEPSIS</div>
+    </div>
+    <div class="nav-right">
+      <a href="{{ url_for('login') }}" class="btn">Admin Login</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="search-box">
+      <form method="get" action="{{ url_for('index') }}">
+        <input type="text" name="query" placeholder="Masukkan kata kunci..." value="{{ query }}">
+        <select name="year">
+          <option value="">Semua Tahun</option>
+          {% for y in years %}
+          <option value="{{ y }}" {% if selected_year==y %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn primary">Cari</button>
+      </form>
+    </section>
+
+    <section class="results">
+      {% if results %}
+        {% for r in results %}
+        <article class="card">
+          <h3 class="card-title">{{ r[0] }}</h3>
+          <p class="meta">Tahun: {{ r[1] }} | Penyelia: {{ r[3] }} | Pelajar: {{ r[4] }}</p>
+          <p class="abstract">{{ r[2] }}</p>
+        </article>
+        {% endfor %}
+      {% else %}
+        <p>Tiada rekod ditemui.</p>
+      {% endif %}
+    </section>
+  </main>
+
+  <footer class="footer">
+    © {{ (2025) }} e-Tajuk@JKEPSIS
+  </footer>
+</body>
+</html>

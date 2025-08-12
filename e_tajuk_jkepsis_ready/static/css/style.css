@@ -1,0 +1,41 @@
+:root{
+  --maroon:#800000;
+  --maroon-2:#6b0000;
+  --muted:#f8f8f8;
+  --text:#222;
+}
+body{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin:0;
+  color:var(--text);
+  background:linear-gradient(180deg,#fff 0%, #f9f6f6 100%);
+}
+.navbar{
+  background:var(--maroon);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 18px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo{height:48px;border-radius:6px;background:white;padding:4px}
+.brand .title{font-weight:700;font-size:20px}
+.nav-right .btn{color:var(--maroon);background:white;padding:8px 12px;border-radius:6px;text-decoration:none}
+.container{max-width:980px;margin:28px auto;padding:0 18px}
+.search-box{background:white;padding:18px;border-radius:10px;display:flex;gap:8px;align-items:center}
+.search-box input[type=text]{flex:1;padding:10px;border:1px solid #ddd;border-radius:6px}
+.search-box select{padding:10px;border-radius:6px;border:1px solid #ddd}
+.btn{border:none;cursor:pointer;padding:10px 14px;border-radius:8px}
+.btn.primary{background:var(--maroon);color:white}
+.results{margin-top:18px}
+.card{background:white;padding:16px;border-radius:8px;border-left:6px solid var(--maroon);margin-bottom:12px}
+.card-title{margin:0 0 6px 0}
+.meta{font-size:13px;color:#555;margin-bottom:8px}
+.abstract{color:#333}
+.auth, .admin-panel{max-width:480px;margin:40px auto;padding:20px;background:white;border-radius:8px}
+.auth input, .admin-panel input[type=file]{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:6px}
+.flash.success{background:#e6ffed;padding:8px;border-left:4px solid #3aa76d;margin-bottom:10px}
+.flash.danger{background:#ffe6e6;padding:8px;border-left:4px solid #d9534f;margin-bottom:10px}
+.footer{text-align:center;padding:18px;color:#666;margin-top:34px}
