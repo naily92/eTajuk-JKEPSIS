@@ -43,6 +43,20 @@ print-tools { margin-top: 12px; }
   /* Paksa tunjuk versi penuh abstrak */
   .print-tools,
   .hide-print-btn,
+
+   navbar {
+    /* Paling penting: Kembalikan header ke aliran dokumen biasa */
+    position: static !important;
+
+    /* (Pilihan) Buang bayang-bayang yang mungkin ada */
+    box-shadow: none !important; 
+    
+    /* (Pilihan) Tambah garisan bawah untuk gantikan bayang-bayang */
+    border-bottom: 1px solid #000; 
+
+    /* (Pilihan) Beri sedikit ruang antara header dan kandungan */
+    margin-bottom: 2rem; 
+  }
   .abstract.full {
     display: block !important;
   }
