@@ -18,19 +18,19 @@
       {% endif %}
     {% endwith %}
 
-    <h3>Kemaskini Maklumat Sesi</h3>
+    <h3>Update Session Details</h3>
     <form method="post">
       <textarea name="session_text" rows="2" placeholder="Contoh: Data updated up to Sesi Jun 2025">{{ session_text }}</textarea>
-      <button class="btn primary" type="submit">Simpan</button>
+      <button class="btn primary" type="submit">Save</button>
     </form>
 
-    <h3>Upload CSV Projek</h3>
+    <h3>Upload CSV File</h3>
     <form method="post" enctype="multipart/form-data">
       <input type="file" name="file" accept=".csv" required>
       <button class="btn" type="submit">Upload CSV</button>
     </form>
 
-    <p class="muted">Jumlah rekod kini: {{ total }}</p>
+    <p class="muted">Current Record Total: {{ total }}</p>
     <p><a href="{{ url_for('logout') }}">Logout</a></p>
   </div>
 </body>
