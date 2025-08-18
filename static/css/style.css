@@ -44,7 +44,7 @@ print-tools { margin-top: 12px; }
   .print-tools,
   .hide-print-btn,
 
-   navbar {
+   head {
     /* Paling penting: Kembalikan header ke aliran dokumen biasa */
     position: static !important;
 
