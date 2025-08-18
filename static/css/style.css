@@ -51,7 +51,7 @@ print-tools { margin-top: 12px; }
   .abstract.short {
     display: none !important;
   }
- .no-print {
+ .hide-print-btn {
     display: none !important;
   }
   /* Sembunyikan butang "Read more / Show less" semasa print */
