@@ -35,15 +35,16 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helve
 .flash.danger { background: #fdeaea; border: 1px solid #f6c2c2; color: #7a1111; }
 @media (max-width: 720px) { .search-box .search-form { grid-template-columns: 1fr; } }
 
+print-tools { margin-top: 12px; }
+
+/* Paparan semasa print */
 @media print {
-  .no-print {
+  .print-tools,
+  .hide-print-btn,
+  .toggle {
     display: none !important;
   }
- .note {
-    display: none;
-  }
-  /* Sembunyikan semua button masa print */
-  button, .btn {
+  .no-print {
     display: none !important;
   }
 }
