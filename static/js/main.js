@@ -30,4 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+   // Print button
+  const printBtn = document.getElementById("print-btn");
+  if(printBtn){
+    printBtn.addEventListener("click", function(){
+      window.print();
+    });
+  }
 });
