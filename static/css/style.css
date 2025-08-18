@@ -39,7 +39,9 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helve
   .no-print {
     display: none !important;
   }
-
+ .note {
+    display: none;
+  }
   /* Sembunyikan semua button masa print */
   button, .btn {
     display: none !important;
