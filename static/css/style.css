@@ -51,13 +51,11 @@ print-tools { margin-top: 12px; }
   .abstract.short {
     display: none !important;
   }
-
+ .no-print {
+    display: none !important;
+  }
   /* Sembunyikan butang "Read more / Show less" semasa print */
   .toggle {
     display: none !important;
   }
-
-  .no-print {
-    display: none !important;
-  }
-}
+ }
