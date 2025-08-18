@@ -34,3 +34,14 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helve
 .flash.success { background: #e7faef; border: 1px solid #b6ecc8; color: #145c2c; }
 .flash.danger { background: #fdeaea; border: 1px solid #f6c2c2; color: #7a1111; }
 @media (max-width: 720px) { .search-box .search-form { grid-template-columns: 1fr; } }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  /* Sembunyikan semua button masa print */
+  button, .btn {
+    display: none !important;
+  }
+}
