@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         shortEl.style.display = "none";
         fullEl.style.display = "";
         toggle.dataset._text = toggle.textContent;
-        toggle.textContent = "Show less";
+        //toggle.textContent = "Show less";
       }
     });
   }
