@@ -171,7 +171,7 @@ def login():
     if request.method == "POST":
         u = request.form.get("username", "")
         p = request.form.get("password", "")
-        if u == "admin" and p == "admin123":
+        if u == "admin" and p == "eTajukJKEPSIS25":
             session["username"] = u
             return redirect(url_for("admin"))
         flash("Invalid login", "danger")
@@ -205,15 +205,15 @@ def admin():
                                         row.get("supervisor",""), row.get("student","")))
                 conn.commit()
                 conn.close()
-                flash("CSV dimuat naik & data dimasukkan", "success")
+                flash("CSV successfuly uploaded", "success")
                 return redirect(url_for("admin"))
             else:
-                flash("Sila pilih fail CSV yang sah", "danger")
+                flash("Please choose a valid CSV file", "danger")
                 return redirect(url_for("admin"))
 
         new_text = request.form.get("session_text", "").strip()
         set_setting("session_text", new_text)
-        flash("Maklumat sesi dikemaskini", "success")
+        flash("Session details successfully updated", "success")
         return redirect(url_for("admin"))
 
     current_text = get_setting("session_text", "")
