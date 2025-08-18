@@ -64,16 +64,18 @@
           <p class="abstract full" style="display:none">{{ r[2]|safe }}</p>
           <a href="#" class="toggle">Read more</a>
           
-          <button class="btn hide-print-btn">Hide from Print</button>
-                  </article>
-          <div class="print-container">
-          <button id="print-btn" class="btn primary">Print Search Results</button>
-          <p class="muted note">* Clik "Read more" at Abstract to display full abstract in print view.</p>
-          </div>
+          <button type="button" class="btn hide-print-btn">Hide from Print</button>
+         </article>
         {% endfor %}
-      {% elif query %}
-        <p class="muted">No record found.</p>
-      {% endif %}
+
+              <div class="print-tools">
+      <button id="print-btn" class="btn primary">Cetak Hasil Carian</button>
+      <p class="muted note">* Klik "Read more" pada abstrak jika mahu dipaparkan penuh dalam cetakan.</p>
+    </div>
+  {% elif query %}
+    <p class="muted">No record found.</p>
+  {% endif %}
+
     </section>
   </main>
 
