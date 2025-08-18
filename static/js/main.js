@@ -39,42 +39,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // (Bonus) Auto expand semua abstrak masa print
-  function expandAll() {
-    document.querySelectorAll(".card").forEach(card => {
-      const shortEl = card.querySelector(".abstract.short");
-      const fullEl = card.querySelector(".abstract.full");
-      const toggle = card.querySelector(".toggle");
-      if (shortEl && fullEl && toggle) {
-        shortEl.dataset._display = shortEl.style.display || "";
-        fullEl.dataset._display = fullEl.style.display || "";
-        shortEl.style.display = "none";
-        fullEl.style.display = "";
-        toggle.dataset._text = toggle.textContent;
-        //toggle.textContent = "Show less";
-      }
-    });
-  }
-  function collapseAll() {
-    document.querySelectorAll(".card").forEach(card => {
-      const shortEl = card.querySelector(".abstract.short");
-      const fullEl = card.querySelector(".abstract.full");
-      const toggle = card.querySelector(".toggle");
-      if (shortEl && fullEl && toggle) {
-        shortEl.style.display = shortEl.dataset._display || "";
-        fullEl.style.display = fullEl.dataset._display || "none";
-        if (toggle.dataset._text) toggle.textContent = toggle.dataset._text;
-      }
-    });
-  }
-
-  // Hook sebelum/selepas print (disokong major browser)
-  if ("matchMedia" in window) {
-    const mediaQueryList = window.matchMedia("print");
-    mediaQueryList.addEventListener
-      ? mediaQueryList.addEventListener("change", (e) => e.matches ? expandAll() : collapseAll())
-      : mediaQueryList.addListener((e) => e.matches ? expandAll() : collapseAll()); // fallback lama
-  }
-  window.addEventListener("beforeprint", expandAll);
-  window.addEventListener("afterprint", collapseAll);
-});
+ });
