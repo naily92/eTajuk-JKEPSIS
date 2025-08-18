@@ -38,12 +38,25 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helve
 print-tools { margin-top: 12px; }
 
 /* Paparan semasa print */
+  
 @media print {
+  /* Paksa tunjuk versi penuh abstrak */
   .print-tools,
   .hide-print-btn,
+  .abstract.full {
+    display: block !important;
+  }
+  
+  /* Sembunyikan versi pendek abstrak */
+  .abstract.short {
+    display: none !important;
+  }
+
+  /* Sembunyikan butang "Read more / Show less" semasa print */
   .toggle {
     display: none !important;
   }
+
   .no-print {
     display: none !important;
   }
