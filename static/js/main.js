@@ -1,13 +1,12 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Toggle abstrak (short <-> full)
-  document.querySelectorAll(".toggle").forEach(function (btn) {
-    btn.addEventListener("click", function (e) {
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".toggle").forEach(function(btn){
+    btn.addEventListener("click", function(e){
       e.preventDefault();
       const card = btn.closest(".card");
       const shortEl = card.querySelector(".abstract.short");
       const fullEl = card.querySelector(".abstract.full");
       const isOpen = fullEl.style.display !== "none";
-      if (isOpen) {
+      if(isOpen){
         fullEl.style.display = "none";
         shortEl.style.display = "";
         btn.textContent = "Read more";
@@ -18,25 +17,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // Hide card semasa print sahaja
-  document.querySelectorAll(".hide-print-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      const card = btn.closest(".card");
-      if (card) {
-        card.classList.add("no-print");
-        btn.textContent = "Hidden from Print";
-        btn.disabled = true;
-      }
-    });
-  });
-
-  // Butang cetak
-  const printBtn = document.getElementById("print-btn");
-  if (printBtn) {
-    printBtn.addEventListener("click", function () {
-      window.print();
-    });
-  }
-
- });
+});
