@@ -20,9 +20,9 @@
   <main class="container">
     <section class="search-box card">
       <form method="get" action="{{ url_for('index') }}" class="search-form">
-        <input type="text" name="query" placeholder="Enter your keywords..." value="{{ query }}">
+        <input type="text" name="query" placeholder="Masukkan kata kunci..." value="{{ query }}">
         <select name="year">
-          <option value="">Show all years</option>
+          <option value="">Semua Tahun</option>
           {% for y in years %}
             <option value="{{ y }}" {% if selected_year==y %}selected{% endif %}>{{ y }}</option>
           {% endfor %}
@@ -31,7 +31,7 @@
           <label><input type="radio" name="mode" value="smart" {% if mode=='smart' %}checked{% endif %}> Smart</label>
           <label><input type="radio" name="mode" value="exact" {% if mode=='exact' %}checked{% endif %}> Exact</label>
         </div>
-        <button class="btn primary" type="submit">Find</button>
+        <button class="btn primary" type="submit">Cari</button>
       </form>
 
       {% if session_text %}
@@ -59,22 +59,15 @@
         {% for r in results %}
         <article class="card">
           <h3 class="card-title">{{ r[0]|safe }}</h3>
-          <p class="meta">Year: {{ r[1] }} | Supervisor: {{ r[4] }}{% if r[5] %} | Student: {{ r[5] }}{% endif %}</p>
+          <p class="meta">Tahun: {{ r[1] }} | Penyelia: {{ r[4] }}{% if r[5] %} | Pelajar: {{ r[5] }}{% endif %}</p>
           <p class="abstract short">{{ r[3]|safe }}</p>
           <p class="abstract full" style="display:none">{{ r[2]|safe }}</p>
           <a href="#" class="toggle">Read more</a>
-          
-          <button type="button" class="btn hide-print-btn">Hide from Print</button>
-         </article>
+        </article>
         {% endfor %}
-
-              <div class="print-tools">
-      <button id="print-btn" class="btn primary">Print Search Results</button>
-    </div>
-  {% elif query %}
-    <p class="muted">No record found.</p>
-  {% endif %}
-
+      {% elif query %}
+        <p class="muted">Tiada rekod ditemui.</p>
+      {% endif %}
     </section>
   </main>
 
