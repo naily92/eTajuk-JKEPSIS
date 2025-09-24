@@ -34,39 +34,3 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helve
 .flash.success { background: #e7faef; border: 1px solid #b6ecc8; color: #145c2c; }
 .flash.danger { background: #fdeaea; border: 1px solid #f6c2c2; color: #7a1111; }
 @media (max-width: 720px) { .search-box .search-form { grid-template-columns: 1fr; } }
-
-print-tools { margin-top: 12px; }
-
-/* Paparan semasa print */
-  
-@media print {
-  /* Paksa tunjuk versi penuh abstrak */
-  .print-tools,
-  .hide-print-btn,
-
-   head {
-    /* Paling penting: Kembalikan header ke aliran dokumen biasa */
-    position: static !important;
-
-    /* (Pilihan) Buang bayang-bayang yang mungkin ada */
-    box-shadow: none !important; 
-    
-    /* (Pilihan) Tambah garisan bawah untuk gantikan bayang-bayang */
-    border-bottom: 1px solid #000; 
-
-    /* (Pilihan) Beri sedikit ruang antara header dan kandungan */
-    margin-bottom: 2rem; 
-  }
-  .abstract.full {
-    display: block !important;
-  }
-  
-  /* Sembunyikan versi pendek abstrak */
-  .abstract.short {
-    display: none !important;
-  }
-  /* Sembunyikan butang "Read more / Show less" semasa print */
-  .toggle {
-    display: none !important;
-  }
- }
