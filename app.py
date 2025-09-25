@@ -1,7 +1,8 @@
 import os, re, csv
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import Flask, render_template, request, redirect, url_for, session, flash, Markup
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from markupsafe import Markup
 import nltk
 from nltk.corpus import wordnet
 from werkzeug.utils import secure_filename
