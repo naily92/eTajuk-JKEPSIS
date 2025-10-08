@@ -222,6 +222,7 @@ def admin():
                 cur = conn.cursor()
                 with open(path, newline="", encoding="utf-8") as csvfile:
                     reader = csv.DictReader(csvfile)
+                    reader.fieldnames = [name.strip().lower().replace('\ufeff', '') for name in reader.fieldnames]
                     for row in reader:
                         cur.execute("""INSERT INTO projects (title, year, abstract, supervisor, student)
                                        VALUES (%s, %s, %s, %s, %s)""",
