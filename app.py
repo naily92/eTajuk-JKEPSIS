@@ -1,5 +1,6 @@
 import os, re, csv, psycopg2
-from flask import Flask, render_template, request, redirect, url_for, session, flash, Markup
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from markupsafe import Markup
 import nltk
 from nltk.corpus import wordnet
 from werkzeug.utils import secure_filename
