@@ -16,6 +16,10 @@ UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "upload
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 ALLOWED_EXTENSIONS = {"csv"}
 
+def allowed_file(filename):
+    # Hanya benarkan fail .csv
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 # --- DATABASE CONNECTION (Neon.tech) ---
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
