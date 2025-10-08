@@ -123,7 +123,7 @@ def build_exact_query(words, year=None):
 
 def build_smart_query(words, year=None):
     groups, params = [], []
-   for w in words:
+    for w in words:
         limit = 10 if len(words) == 1 else 5
         syns = get_synonyms(w, max_synonyms=limit)
         subs = []
