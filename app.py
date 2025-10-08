@@ -76,12 +76,31 @@ def set_setting(key, value):
     conn.close()
 
 # --- SEARCH UTILITIES ---
-def get_synonyms(word):
-    syns = set([word.lower()])
+# --- SMART SYNONYM SYSTEM WITH CACHE & FILTER --- #
+synonym_cache = {}  # cache untuk simpan sinonim yang pernah dicari
+
+def get_synonyms(word, max_synonyms=10):
+    """Dapatkan sinonim yang lebih relevan dan terhad"""
+    word = word.lower().strip()
+    if not word:
+        return [word]
+    
+    # Cek cache dulu
+    if word in synonym_cache:
+        return synonym_cache[word]
+    
+    syns = set([word])
     for syn in wordnet.synsets(word):
         for lemma in syn.lemmas():
-            syns.add(lemma.name().replace("_", " ").lower())
-    return sorted(syns)
+            candidate = lemma.name().replace("_", " ").lower()
+            # tapis sinonim yang terlalu jauh
+            if abs(len(candidate) - len(word)) < len(word) and any(ch in candidate for ch in word):
+                syns.add(candidate)
+    
+    limited = sorted(list(syns))[:max_synonyms]
+    synonym_cache[word] = limited  # simpan dalam cache
+    
+    return limited
 
 def highlight_text(text, keywords):
     if not text or not keywords:
@@ -104,8 +123,9 @@ def build_exact_query(words, year=None):
 
 def build_smart_query(words, year=None):
     groups, params = [], []
-    for w in words:
-        syns = get_synonyms(w)
+   for w in words:
+        limit = 10 if len(words) == 1 else 5
+        syns = get_synonyms(w, max_synonyms=limit)
         subs = []
         for s in syns:
             subs.append("(title ILIKE %s OR abstract ILIKE %s)")
