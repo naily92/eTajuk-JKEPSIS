@@ -1,80 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>e-Tajuk@JKEPSIS</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav class="navbar">
-    <div class="brand">
-      <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" class="logo">
-      <span class="title">e-Tajuk@JKEPSIS</span>
-    </div>
-    <div class="nav-right">
-      <a class="btn ghost" href="{{ url_for('login') }}">Admin Login</a>
-    </div>
-  </nav>
+  <header>
+    <h1>e-Tajuk<span class="highlight">@JKEPSIS</span></h1>
+    <p class="subtitle">Sistem Semakan Tajuk Projek Pelajar Jabatan Kejuruteraan Elektrik</p>
+  </header>
 
-  <main class="container">
-    <section class="search-box card">
-      <form method="get" action="{{ url_for('index') }}" class="search-form">
-        <input type="text" name="query" placeholder="Masukkan kata kunci..." value="{{ query }}">
-        <select name="year">
-          <option value="">Semua Tahun</option>
-          {% for y in years %}
-            <option value="{{ y }}" {% if selected_year==y %}selected{% endif %}>{{ y }}</option>
-          {% endfor %}
-        </select>
-        <div class="mode">
-          <label><input type="radio" name="mode" value="smart" {% if mode=='smart' %}checked{% endif %}> Smart</label>
-          <label><input type="radio" name="mode" value="exact" {% if mode=='exact' %}checked{% endif %}> Exact</label>
-        </div>
-        <button class="btn primary" type="submit">Cari</button>
-      </form>
+  <main>
+    <section class="welcome card">
+      <h2>Selamat Datang ke <span class="highlight">e-Tajuk@JKEPSIS</span> 🎓</h2>
+      <p>
+        Sistem ini membantu pelajar dan pensyarah Jabatan Kejuruteraan Elektrik, Politeknik Sultan Idris Shah 
+        membuat semakan tajuk projek tahun akhir dengan pantas dan mudah. 
+        Anda boleh mencari tajuk berdasarkan <strong>kata kunci</strong>, <strong>tahun</strong> atau <strong>nama penyelia</strong>.
+      </p>
 
-      {% if session_text %}
-      <div class="session-text">
-        {{ session_text }}
-      </div>
-      {% endif %}
+      <h3 class="section-title">💡 Cara Menggunakan Carian</h3>
+      <ul class="usage-list">
+        <li>Taip mana-mana perkataan berkaitan tajuk projek, contohnya: <em>IoT sensor</em> atau <em>motor control</em>.</li>
+        <li><strong>Exact Search</strong> – mencari padanan tepat pada tajuk atau abstrak projek. 
+            Sesuai jika anda tahu frasa sebenar seperti <em>solar charging system</em>.</li>
+        <li><strong>Smart Search</strong> – menggunakan carian pintar dengan sinonim automatik 
+            (contoh: “AI” juga akan padankan “artificial intelligence”).</li>
+        <li>Jika anda taip dua atau lebih perkataan, sistem akan mencari tajuk yang mengandungi semua perkataan tersebut 
+            walaupun tidak dalam urutan yang sama.</li>
+        <li>Gunakan <strong>Penapis Tahun</strong> di sebelah kanan untuk melihat tajuk dari sesi tertentu sahaja.</li>
+      </ul>
 
-      {% if query %}
-      <div class="counts">
-        <span>Exact: <strong>{{ exact_count }}</strong></span>
-        <span>Smart: <strong>{{ smart_count }}</strong></span>
-      </div>
-      {% if mode=='smart' and smart_terms %}
-      <div class="smart-terms">
-        <strong>Smart Search keywords:</strong>
-        <span>{{ ", ".join(smart_terms) }}</span>
-      </div>
-      {% endif %}
-      {% endif %}
+      <p class="muted">
+        Carian pintar sedang dikembangkan untuk memahami maksud perkataan dengan lebih tepat berdasarkan konteks projek pelajar.
+      </p>
     </section>
 
-    <section class="results">
-      {% if results %}
-        {% for r in results %}
-        <article class="card">
-          <h3 class="card-title">{{ r[0]|safe }}</h3>
-          <p class="meta">Tahun: {{ r[1] }} | Penyelia: {{ r[4] }}{% if r[5] %} | Pelajar: {{ r[5] }}{% endif %}</p>
-          <p class="abstract short">{{ r[3]|safe }}</p>
-          <p class="abstract full" style="display:none">{{ r[2]|safe }}</p>
-          <a href="#" class="toggle">Read more</a>
-        </article>
-        {% endfor %}
-      {% elif query %}
-        <p class="muted">Tiada rekod ditemui.</p>
-      {% endif %}
+    <section class="search-section card">
+      <h3>🔍 Carian Projek</h3>
+      <form id="searchForm">
+        <input type="text" id="keyword" placeholder="Masukkan kata kunci projek...">
+        <select id="yearFilter">
+          <option value="">Semua Tahun</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+        </select>
+        <button type="submit">Cari</button>
+      </form>
+
+      <div id="resultCount" class="result-count"></div>
+      <div id="results"></div>
     </section>
   </main>
 
-  <footer class="footer">
-    © e-Tajuk@JKEPSIS
+  <footer>
+    <p>© 2025 e-Tajuk@JKEPSIS | Jabatan Kejuruteraan Elektrik, Politeknik Sultan Idris Shah</p>
   </footer>
-
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
