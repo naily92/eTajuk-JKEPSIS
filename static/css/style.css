@@ -34,3 +34,35 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helve
 .flash.success { background: #e7faef; border: 1px solid #b6ecc8; color: #145c2c; }
 .flash.danger { background: #fdeaea; border: 1px solid #f6c2c2; color: #7a1111; }
 @media (max-width: 720px) { .search-box .search-form { grid-template-columns: 1fr; } }
+
+/* ✨ Bahagian Alu-aluan & Penerangan Utama */
+.welcome-info {
+  background: var(--card);
+  border-left: 6px solid var(--maroon);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.welcome-info h2 {
+  color: var(--maroon);
+  margin-top: 0;
+}
+
+.welcome-info .highlight {
+  color: var(--maroon-dark);
+  font-weight: 700;
+}
+
+.welcome-info ul {
+  margin: 8px 0 12px 20px;
+}
+
+.welcome-info ul li {
+  margin-bottom: 6px;
+}
+
+.welcome-info .muted {
+  color: var(--muted);
+  font-style: italic;
+}
