@@ -83,43 +83,43 @@ from difflib import get_close_matches
 
 synonym_cache = {}
 
-def get_synonyms(word, max_synonyms=10):
-    """
-    Hybrid Smart Search:
-    Gabungan WordNet + Smart Search Lite untuk sinonim yang lebih relevan.
-    Contoh: 'smoke' → ['smoke', 'smokes', 'smoked', 'smoking', 'fume', 'vapor']
-    """
+def get_synonyms(word, max_synonyms=8):
+    """Versi hybrid: gabung WordNet + pendekatan ringan ala Google Search"""
     word = word.lower().strip()
     if not word:
         return [word]
 
-    # Semak cache dulu
     if word in synonym_cache:
         return synonym_cache[word]
 
     syns = set([word])
 
-    # Ambil sinonim dari WordNet
+    # WordNet base
     for syn in wordnet.synsets(word):
         for lemma in syn.lemmas():
             candidate = lemma.name().replace("_", " ").lower()
-            # tapis sinonim pelik
-            if abs(len(candidate) - len(word)) <= 3 and candidate[0] == word[0]:
+            # tapis sinonim jauh atau pelik
+            if len(candidate) > 2 and not any(ch.isdigit() for ch in candidate):
                 syns.add(candidate)
 
-    # Tambah variasi akar kata
-    for suffix in ["", "s", "ed", "ing"]:
-        syns.add(word + suffix)
+    # Tambah bentuk variasi kata manual (stemming ringkas)
+    stems = [word, word + "s", word + "ed", word + "ing"]
+    syns.update(stems)
 
-    # Tapis semula guna similarity
-    filtered = set()
-    for s in syns:
-        # cutoff 0.6 = lebih longgar (boleh ubah jadi 0.7 untuk lebih ketat)
-        if get_close_matches(s, [word], n=1, cutoff=0.6):
-            filtered.add(s)
+    # Tambah smart similarity (mirip ejaan)
+    for candidate in list(syns):
+        if len(candidate) > 3:
+            for variant in [candidate + "s", candidate[:-1], candidate + "ing"]:
+                syns.add(variant)
 
-    limited = sorted(list(filtered))[:max_synonyms]
+    # Tapis perkataan yang jauh sangat beza
+    syns = [s for s in syns if abs(len(s) - len(word)) <= len(word)]
+    
+    # Simpan versi akhir
+    limited = sorted(list(set(syns)))[:max_synonyms]
     synonym_cache[word] = limited
+
+    print(f"Smart Search keywords: {limited}")  # Debug (optional)
     return limited
 
 def highlight_text(text, keywords):
