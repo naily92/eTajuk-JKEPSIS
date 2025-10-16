@@ -84,7 +84,7 @@ from nltk.corpus import wordnet
 synonym_cache = {}
 
 def get_synonyms(word, max_synonyms=8):
-    """Versi refined: tapis sinonim pelik & kekalkan relevan"""
+    """Versi hybrid: WordNet + Smart filter untuk sinonim relevan sahaja"""
     word = word.lower().strip()
     if not word:
         return [word]
@@ -92,30 +92,34 @@ def get_synonyms(word, max_synonyms=8):
     if word in synonym_cache:
         return synonym_cache[word]
 
-    # Stoplist untuk tapis sinonim pelik
-    stoplist = {"weed", "pot", "condom", "sex", "dope", "appall", "rubber", "grass", "horrify", "skunk"}
-
     syns = set([word])
 
-    # Ambil sinonim dari WordNet
+    # WordNet base
     for syn in wordnet.synsets(word):
-        for lemma in syn.lemmas():
-            candidate = lemma.name().replace("_", " ").lower()
-            if (
-                len(candidate) > 2
-                and candidate not in stoplist
-                and not any(ch.isdigit() for ch in candidate)
-                and abs(len(candidate) - len(word)) < len(word) + 4
-                and any(ch in candidate for ch in word)
-            ):
-                syns.add(candidate)
+        # tapis makna yang bukan noun/verb biasa
+        if syn.pos() in ['n', 'v', 'a']:  # noun, verb, adjective sahaja
+            for lemma in syn.lemmas():
+                candidate = lemma.name().replace("_", " ").lower()
+                # tapis perkataan pelik atau berkaitan slang
+                if (len(candidate) > 2 
+                    and not any(ch.isdigit() for ch in candidate)
+                    and candidate.isalpha()
+                    and not any(bad in candidate for bad in [
+                        "weed", "dope", "mary", "locoweed", "bullet", "fastball",
+                        "gage", "pot", "hummer", "green", "goddess", "condom"
+                    ])
+                ):
+                    syns.add(candidate)
 
-    # Tambah variasi bentuk kata
-    for variant in [word + "s", word + "ed", word + "ing"]:
-        syns.add(variant)
+    # tambah variasi kata asas
+    stems = [word, word + "s", word + "ed", word + "ing"]
+    syns.update(stems)
 
-    # Hadkan kepada bilangan sinonim munasabah
-    limited = sorted(list(syns))[:max_synonyms]
+    # tapis sinonim terlalu jauh panjang
+    syns = [s for s in syns if abs(len(s) - len(word)) <= len(word)]
+
+    # sort dan hadkan jumlah
+    limited = sorted(list(set(syns)))[:max_synonyms]
     synonym_cache[word] = limited
 
     print(f"[Smart Search] Keywords for '{word}': {limited}")
