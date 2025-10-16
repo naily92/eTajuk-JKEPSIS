@@ -77,68 +77,45 @@ def set_setting(key, value):
 
 # --- SEARCH UTILITIES --- 
 # --- SMART SYNONYM SYSTEM WITH CACHE & FILTER --- #
-synonym_cache = {}  # cache untuk simpan sinonim yang pernah dicari
-
 from difflib import get_close_matches
 from nltk.corpus import wordnet
 
+# Cache untuk simpan sinonim yang pernah dicari
 synonym_cache = {}
 
 def get_synonyms(word, max_synonyms=8):
-    """
-    Smart Search v4:
-    - Guna WordNet untuk sinonim sebenar.
-    - Ada fallback bila WordNet tak dapat diakses (contohnya server baru aktif).
-    - Termasuk variasi bentuk kata (plural, past tense, gerund).
-    - Auto-cache untuk mempercepat carian seterusnya.
-    """
+    """Versi refined: tapis sinonim pelik & kekalkan relevan"""
     word = word.lower().strip()
     if not word:
         return [word]
 
-    # Semak cache
     if word in synonym_cache:
         return synonym_cache[word]
 
+    # Stoplist untuk tapis sinonim pelik
+    stoplist = {"weed", "pot", "condom", "sex", "dope", "appall", "rubber", "grass", "horrify", "skunk"}
+
     syns = set([word])
 
-    try:
-        # Cuba guna WordNet (mungkin ambil masa sedikit bila server baru aktif)
-        for syn in wordnet.synsets(word):
-            for lemma in syn.lemmas():
-                candidate = lemma.name().replace("_", " ").lower()
-                # tapis sinonim pelik
-                if (
-                    candidate != word
-                    and len(candidate) > 2
-                    and candidate.isalpha()
-                    and not any(ch.isdigit() for ch in candidate)
-                ):
-                    syns.add(candidate)
-    except Exception as e:
-        print(f"[WARNING] WordNet unavailable, fallback active: {e}")
+    # Ambil sinonim dari WordNet
+    for syn in wordnet.synsets(word):
+        for lemma in syn.lemmas():
+            candidate = lemma.name().replace("_", " ").lower()
+            if (
+                len(candidate) > 2
+                and candidate not in stoplist
+                and not any(ch.isdigit() for ch in candidate)
+                and abs(len(candidate) - len(word)) < len(word) + 4
+                and any(ch in candidate for ch in word)
+            ):
+                syns.add(candidate)
 
-    # Tambah bentuk variasi kata asas (untuk fallback juga)
-    stems = [
-        word,
-        word + "s",
-        word + "ed",
-        word + "ing",
-        word.rstrip("e") + "ing",
-        word[:-1] + "es" if len(word) > 3 else word,
-    ]
-    syns.update(stems)
+    # Tambah variasi bentuk kata
+    for variant in [word + "s", word + "ed", word + "ing"]:
+        syns.add(variant)
 
-    # Jika WordNet gagal, sekurang-kurangnya ada 3-5 bentuk kata
-    if len(syns) < 3:
-        backup_forms = [word, word + "s", word + "ed", word + "ing"]
-        syns.update(backup_forms)
-
-    # Susun ikut panjang supaya perkataan utama dulu
-    clean_syns = sorted(syns, key=lambda x: (len(x), x))
-
-    # Hadkan sinonim kepada nilai max_synonyms
-    limited = clean_syns[:max_synonyms]
+    # Hadkan kepada bilangan sinonim munasabah
+    limited = sorted(list(syns))[:max_synonyms]
     synonym_cache[word] = limited
 
     print(f"[Smart Search] Keywords for '{word}': {limited}")
