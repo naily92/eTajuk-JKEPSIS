@@ -79,31 +79,47 @@ def set_setting(key, value):
 # --- SMART SYNONYM SYSTEM WITH CACHE & FILTER --- #
 synonym_cache = {}  # cache untuk simpan sinonim yang pernah dicari
 
-def get_synonyms(word, max_synonyms=8):
-    """Dapatkan sinonim yang lebih relevan dan terhad"""
+from difflib import get_close_matches
+
+synonym_cache = {}
+
+def get_synonyms(word, max_synonyms=10):
+    """
+    Hybrid Smart Search:
+    Gabungan WordNet + Smart Search Lite untuk sinonim yang lebih relevan.
+    Contoh: 'smoke' → ['smoke', 'smokes', 'smoked', 'smoking', 'fume', 'vapor']
+    """
     word = word.lower().strip()
     if not word:
         return [word]
 
+    # Semak cache dulu
     if word in synonym_cache:
         return synonym_cache[word]
 
     syns = set([word])
-    for syn in wordnet.synsets(word)[:3]:  # ambil maks 3 synset pertama je
+
+    # Ambil sinonim dari WordNet
+    for syn in wordnet.synsets(word):
         for lemma in syn.lemmas():
             candidate = lemma.name().replace("_", " ").lower()
-            # tapis sinonim pelik atau slang
-            if (
-                candidate != word
-                and candidate.isalpha()
-                and 2 <= len(candidate) <= len(word) * 2
-                and " " not in candidate
-            ):
+            # tapis sinonim pelik
+            if abs(len(candidate) - len(word)) <= 3 and candidate[0] == word[0]:
                 syns.add(candidate)
 
-    limited = sorted(list(syns))[:max_synonyms]
-    synonym_cache[word] = limited
+    # Tambah variasi akar kata
+    for suffix in ["", "s", "ed", "ing"]:
+        syns.add(word + suffix)
 
+    # Tapis semula guna similarity
+    filtered = set()
+    for s in syns:
+        # cutoff 0.6 = lebih longgar (boleh ubah jadi 0.7 untuk lebih ketat)
+        if get_close_matches(s, [word], n=1, cutoff=0.6):
+            filtered.add(s)
+
+    limited = sorted(list(filtered))[:max_synonyms]
+    synonym_cache[word] = limited
     return limited
 
 def highlight_text(text, keywords):
