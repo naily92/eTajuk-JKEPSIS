@@ -79,38 +79,31 @@ def set_setting(key, value):
 # --- SMART SYNONYM SYSTEM WITH CACHE & FILTER --- #
 synonym_cache = {}  # cache untuk simpan sinonim yang pernah dicari
 
-def get_synonyms(word, max_synonyms=10):
-    """Dapatkan sinonim yang lebih relevan (elak slang & istilah tidak berkaitan)"""
+def get_synonyms(word, max_synonyms=8):
+    """Dapatkan sinonim yang lebih relevan dan terhad"""
     word = word.lower().strip()
     if not word:
         return [word]
 
-    # Semak cache
     if word in synonym_cache:
         return synonym_cache[word]
 
     syns = set([word])
-    for syn in wordnet.synsets(word):
-        # Ambil hanya noun dan verb untuk konteks umum
-        if syn.pos() in ('n', 'v'):
-            for lemma in syn.lemmas():
-                candidate = lemma.name().replace("_", " ").lower()
+    for syn in wordnet.synsets(word)[:3]:  # ambil maks 3 synset pertama je
+        for lemma in syn.lemmas():
+            candidate = lemma.name().replace("_", " ").lower()
+            # tapis sinonim pelik atau slang
+            if (
+                candidate != word
+                and candidate.isalpha()
+                and 2 <= len(candidate) <= len(word) * 2
+                and " " not in candidate
+            ):
+                syns.add(candidate)
 
-                # TAPIS: pastikan bukan istilah pelik atau slang
-                if (candidate.isalpha() and
-                    len(candidate) > 2 and
-                    len(candidate) <= 15 and
-                    not any(ch.isdigit() for ch in candidate) and
-                    candidate != word and
-                    abs(len(candidate) - len(word)) < len(word) / 2 and
-                    any(ch in candidate for ch in word)):
-                    syns.add(candidate)
-
-    # Hadkan jumlah sinonim dan susun
     limited = sorted(list(syns))[:max_synonyms]
-
-    # Simpan ke cache
     synonym_cache[word] = limited
+
     return limited
 
 def highlight_text(text, keywords):
